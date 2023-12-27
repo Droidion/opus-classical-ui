@@ -1,0 +1,25 @@
+---
+import type { Streamer } from '@models/Streamer'
+
+interface Props {
+  streamer: Streamer
+}
+
+const { streamer } = Astro.props
+---
+
+<div class="mt-2 mr-2">
+  <a href={streamer.prefix + streamer.link}>
+    {
+      streamer.streamer == `Spotify` && (
+        <img src="/spotify-logo.svg" height="24" width="24" alt="Spotify" />
+      )
+    }
+
+    {
+      streamer.streamer == `Qobuz` && (
+        <img src="/qobuz-logo.svg" height="24" width="24" alt="Qobuz" />
+      )
+    }
+  </a>
+</div>

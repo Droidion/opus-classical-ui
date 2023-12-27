@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 18px;
+  }
+  body {
+    @apply font-sans text-mineshaft bg-white dark:text-white/80 dark:bg-codgray;
+  }
+  h1, h2 {
+    @apply font-serif font-medium;
+  }
+  h1 {
+    @apply flex flex-wrap mt-4 text-3xl xl:text-4xl justify-center text-center;
+  }
+  h2 {
+    @apply text-cinnamon dark:text-lazer mt-4 text-2xl;
+  }
+  hr {
+    @apply border-none h-px mx-0 my-1 bg-cinnamon dark:bg-lazer;
+  }
+  p {
+    @apply mt-4;
+  }
+  a {
+    @apply hover:underline
+  }
+}
+
+@layer components {
+  .icon {
+    @apply fill-mineshaft dark:fill-white/80;
+  }
+  .vertical-separator {
+    @apply relative inline-block top-0.5 w-px h-4 mx-1.5 bg-black/20 dark:bg-white/20;
+  }
+}

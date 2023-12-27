@@ -1,0 +1,48 @@
+---
+import { formatWorkName, formatYearsRangeString } from '@lib/helpers'
+import RecordingCard from '@components/RecordingCard.astro'
+import UserLayout from '@layouts/UserLayout.astro'
+import { getRecordingsByWork, getWorkMetadata } from '@lib/apiClient'
+import type { WorkMetadata } from '@models/WorkMetadata'
+import type { RecordingsByWork } from '@models/RecordingsByWork'
+
+const workId = Number(Astro.params.workId)
+
+if (!workId) {
+  return Astro.redirect('/404')
+}
+let work: WorkMetadata
+let recordings: RecordingsByWork
+try {
+  work = await getWorkMetadata(workId)
+  recordings = await getRecordingsByWork(workId)
+} catch (e) {
+  console.log(e)
+  return Astro.redirect('/404')
+}
+
+const fullName = work ? formatWorkName(work.title, work.no, work.nickname) : ''
+const title = work
+  ? formatWorkName(work.title, work.no, work.nickname, true)
+  : ''
+const composePeriod = work
+  ? formatYearsRangeString(work?.yearStart, work?.yearFinish)
+  : ''
+---
+
+<UserLayout title={`${title} | Opus Classical`}>
+  <div>
+    <h1><span set:html={fullName} /></h1>
+    <div class="w-full text-center mb-4">
+      <a href={`/composer/${work?.composerSlug}`}
+        >{work?.composerFirstName}&nbsp;{work?.composerLastName}</a
+      >
+      {composePeriod && <span>, {composePeriod}</span>}
+    </div>
+    <h2>Recommended Recordings</h2>
+    <hr />
+    <div class="flex flex-wrap mb-4 full-width">
+      {recordings?.map(recording => <RecordingCard recording={recording} />)}
+    </div>
+  </div>
+</UserLayout>

@@ -1,0 +1,49 @@
+---
+import {
+  formatWorkName,
+  formatCatalogueName,
+  formatWorkLength,
+  formatYearsRangeString,
+} from '@lib/helpers'
+import type { Work } from '@models/Work'
+
+interface Props {
+  work: Work
+}
+
+const { work } = Astro.props
+
+const fullName = formatWorkName(work.title, work.no, work.nickname)
+
+const catalogueNotation = formatCatalogueName(
+  work.catalogueName,
+  work.catalogueNumber,
+  work.cataloguePostfix,
+)
+
+const averageLengthFormatted = formatWorkLength(work.averageMintues)
+
+const composePeriod = formatYearsRangeString(work.yearStart, work.yearFinish)
+
+const showWorkSubtitle =
+  !!fullName || !!catalogueNotation || !!averageLengthFormatted
+---
+
+<div class="mr-6 mb-3">
+  <div>
+    <span set:html={fullName} />
+  </div>
+  {
+    showWorkSubtitle && (
+      <div class="text-xs font-light">
+        {catalogueNotation && <span>{catalogueNotation}</span>}
+        {catalogueNotation && (composePeriod || averageLengthFormatted) && (
+          <span class="vertical-separator" />
+        )}
+        {composePeriod && <span>{composePeriod}</span>}
+        {composePeriod && <span class="vertical-separator" />}
+        {averageLengthFormatted && <span>{averageLengthFormatted}</span>}
+      </div>
+    )
+  }
+</div>

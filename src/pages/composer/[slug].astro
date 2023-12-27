@@ -1,0 +1,66 @@
+---
+import { formatYearsRangeString } from '@lib/helpers'
+import WorkCard from '@components/WorkCard.astro'
+import UserLayout from '@layouts/UserLayout.astro'
+import { getComposerBySlug, getWorksByGenres } from '@lib/apiClient'
+import type { ComposerBySlug } from '@models/ComposerBySlug'
+import type { WorksByGenres } from '@models/WorksByGenres'
+
+const { slug } = Astro.params
+if (!slug) {
+  return Astro.redirect('/404', 404)
+}
+let composer: ComposerBySlug
+let genres: WorksByGenres
+try {
+  composer = await getComposerBySlug(slug)
+  genres = await getWorksByGenres(composer.id)
+} catch (e) {
+  return Astro.redirect('/404', 404)
+}
+
+const yearsLived = formatYearsRangeString(composer.yearBorn, composer.yearDied)
+---
+
+<UserLayout title={`${composer.lastName} | Opus Classical`}>
+  <div>
+    <h1>{composer.firstName}&nbsp;{composer.lastName}</h1>
+    <div class="w-full text-center mb-4">
+      <span>{composer.countries}</span>
+      <span class="vertical-separator"></span>
+      <span>{yearsLived}</span>
+      {
+        composer.wikipediaLink && (
+          <>
+            <span class="vertical-separator" />
+            <a href={composer.wikipediaLink}>Wikipedia</a>
+          </>
+        )
+      }
+      {
+        composer.imslpLink && (
+          <>
+            <span class="vertical-separator" />
+            <a href={composer.imslpLink}>IMSLP</a>
+          </>
+        )
+      }
+    </div>
+
+    {
+      genres?.map(genre => (
+        <>
+          <h2>{genre.genreName}</h2>
+          <hr />
+          <div class="flex flex-wrap mb-4">
+            {genre.works.map(work => (
+              <a href={`/composer/${composer.slug}/work/${work.id}`}>
+                <WorkCard work={work} />
+              </a>
+            ))}
+          </div>
+        </>
+      ))
+    }
+  </div>
+</UserLayout>

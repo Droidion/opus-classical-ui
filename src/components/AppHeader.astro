@@ -1,0 +1,16 @@
+---
+import Search from './Search.svelte'
+import MainLogo from './MainLogo.astro'
+import ThemeSwitcher from './ThemeSwitcher.astro'
+---
+
+<header
+  class="bg-black/20 xl:bg-white dark:xl:bg-codgray dark:bg-mineshaft h-16 xl:h-24 xl:sticky top-0 z-10 flex items-center justify-between max-w-screen-xl px-4 w-full"
+>
+  <MainLogo />
+
+  <nav class="menu flex items-center">
+    <div class="mr-4"><ThemeSwitcher /></div>
+    <Search client:load />
+  </nav>
+</header>

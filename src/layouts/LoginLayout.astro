@@ -1,0 +1,23 @@
+---
+import HeadBlock from './HeadBlock.astro'
+
+interface Props {
+  title: string
+}
+
+const { title } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <HeadBlock title={title} />
+  <body>
+    <script is:inline src="/theme-loader.js"></script>
+    <div class="grid grid-rows-[auto_1fr_auto] justify-items-center w-full">
+      <slot />
+    </div>
+    <style is:global>
+      @import '@styles/tailwind.css';
+    </style>
+  </body>
+</html>

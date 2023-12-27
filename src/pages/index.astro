@@ -1,0 +1,38 @@
+---
+import UserLayout from '@layouts/UserLayout.astro'
+import ComposerCard from '@components/ComposerCard.astro'
+import { formatYearsRangeString } from '@lib/helpers'
+import { getComposersByPeriods } from '@lib/apiClient'
+import type { ComposersByPeriods } from '@models/ComposersByPeriods'
+
+let periods: ComposersByPeriods = []
+try {
+  periods = await getComposersByPeriods()
+} catch (error) {
+  return Astro.redirect('/404', 404)
+}
+---
+
+<UserLayout title="Composers | Opus Classical">
+  <div>
+    <h1>Composers</h1>
+    {
+      periods.map(period => (
+        <>
+          <h2>
+            {period.name},
+            {formatYearsRangeString(period.yearStart, period.yearEnd)}
+          </h2>
+          <hr />
+          <div class="flex flex-wrap mb-4">
+            {period.composers.map(composer => (
+              <a href={`/composer/${composer.slug}`}>
+                <ComposerCard composer={composer} />
+              </a>
+            ))}
+          </div>
+        </>
+      ))
+    }
+  </div>
+</UserLayout>

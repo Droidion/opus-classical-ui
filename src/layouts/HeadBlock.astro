@@ -1,0 +1,50 @@
+---
+import { ViewTransitions } from 'astro:transitions'
+import { pwaInfo } from 'virtual:pwa-info'
+
+interface Props {
+  title: string
+}
+
+const { title } = Astro.props
+---
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Catalogue for streaming classical music." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="msapplication-TileColor" content="#da532c" />
+  <meta
+    name="theme-color"
+    media="(prefers-color-scheme: light)"
+    content="#ffffff"
+  />
+  <meta
+    name="theme-color"
+    media="(prefers-color-scheme: dark)"
+    content="#1a1a1a"
+  />
+  <meta name="color-scheme" content="dark light" />
+  <link
+    rel="apple-touch-icon"
+    type="image/png"
+    sizes="180x180"
+    href="/apple-touch-icon.png"
+  />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#fff" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link
+    rel="apple-touch-icon-precomposed"
+    type="image/png"
+    sizes="180x180"
+    href="/apple-touch-icon.png"
+  />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <title>{title}</title>
+  <script is:inline src="/init-switcher.js" defer></script>
+  <script src="/src/pwa.ts"></script>
+  {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
+  <ViewTransitions />
+</head>

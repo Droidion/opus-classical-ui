@@ -1,0 +1,49 @@
+---
+import StreamerCard from './StreamerCard.astro'
+import PerformerCard from './PerformerCard.astro'
+import { formatWorkLength, formatYearsRangeString } from '@lib/helpers'
+import { Image } from 'astro:assets'
+import type { Recording } from '@models/Recording'
+
+interface Props {
+  recording: Recording
+}
+
+const { recording } = Astro.props
+const lengthFormatted = formatWorkLength(recording.length)
+const composePeriod = formatYearsRangeString(
+  recording.yearStart,
+  recording.yearFinish,
+)
+---
+
+<div class="flex flex-1 min-w-full mt-2 mr-8 mb-6 xl:min-w-[450px]">
+  <Image
+    class="cover float-left h-24 w-24 xl:h-52 xl:w-52 mr-4 border border-black/20 dark:border-white/20 xl:mr-6"
+    src={`${process.env.IMAGES_URL}/${recording.coverName}`}
+    alt="A description of my image."
+    width="400"
+    height="400"
+  />
+  <div>
+    {
+      recording.performers.map(performer => (
+        <PerformerCard performer={performer} />
+      ))
+    }
+    <div class="text-xs font-light">
+      <span>{recording.label}</span>
+      <span class="vertical-separator"></span>
+      <span>{composePeriod}</span>
+      <span class="vertical-separator"></span>
+      <span>{lengthFormatted}</span>
+    </div>
+    <div class="flex items-center">
+      {
+        recording.streamers.map(streamer => (
+          <StreamerCard streamer={streamer} />
+        ))
+      }
+    </div>
+  </div>
+</div>

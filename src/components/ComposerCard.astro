@@ -1,0 +1,22 @@
+---
+import type { Composer } from '@models/Composer'
+import { formatYearsRangeString } from '../lib/helpers'
+
+interface Props {
+  composer: Composer
+}
+
+const { composer } = Astro.props
+---
+
+<div class="mr-6 mb-3">
+  <div>
+    <span>{composer.lastName},&nbsp;</span>
+    <span class="font-light">{composer.firstName}</span>
+  </div>
+  <div class="text-xs font-light">
+    <span>{composer.countries}</span>
+    <span class="vertical-separator"></span>
+    <span>{formatYearsRangeString(composer.yearBorn, composer.yearDied)}</span>
+  </div>
+</div>

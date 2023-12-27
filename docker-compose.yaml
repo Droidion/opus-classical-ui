@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  opus-classical-ui:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    networks:
+      - opusclassical-network
+    env_file: .env
+    ports:
+      - "4321:4321"
+networks:
+  opusclassical-network:
+    driver: bridge
