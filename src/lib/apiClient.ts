@@ -1,4 +1,3 @@
-import ky from 'ky'
 import type { ComposerBySlug } from 'src/models/ComposerBySlug'
 import type { ComposersByPeriods } from 'src/models/ComposersByPeriods'
 import type { FoundComposers } from 'src/models/FoundComposers'
@@ -13,34 +12,40 @@ function getBaseUrl(ssr = true): string {
   )
 }
 
+async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
+  const response = await fetch(url, options)
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+  return (await response.json()) as T
+}
+
 export async function getComposersByPeriods(): Promise<ComposersByPeriods> {
-  return await ky.get(`${getBaseUrl()}/public/composers`).json()
+  return await fetchJson(`${getBaseUrl()}/public/composers`)
 }
 
 export async function getSearchComposersData(): Promise<FoundComposers> {
-  return await ky.get(`${getBaseUrl(false)}/public/composers/search`).json()
+  return await fetchJson(`${getBaseUrl(false)}/public/composers/search`)
 }
 
 export async function getComposerBySlug(slug: string): Promise<ComposerBySlug> {
-  return await ky.get(`${getBaseUrl()}/public/composer/slug/${slug}`).json()
+  return await fetchJson(`${getBaseUrl()}/public/composer/slug/${slug}`)
 }
 
 export async function getWorksByGenres(
   composerId: number,
 ): Promise<WorksByGenres> {
-  return await ky
-    .get(`${getBaseUrl()}/public/composer/id/${composerId}/works`)
-    .json()
+  return await fetchJson(
+    `${getBaseUrl()}/public/composer/id/${composerId}/works`,
+  )
 }
 
 export async function getWorkMetadata(workId: number): Promise<WorkMetadata> {
-  return await ky.get(`${getBaseUrl()}/public/works/${workId}`).json()
+  return await fetchJson(`${getBaseUrl()}/public/works/${workId}`)
 }
 
 export async function getRecordingsByWork(
   workId: number,
 ): Promise<RecordingsByWork> {
-  return await ky
-    .get(`${getBaseUrl()}/public/works/${workId}/recordings`)
-    .json()
+  return await fetchJson(`${getBaseUrl()}/public/works/${workId}/recordings`)
 }
