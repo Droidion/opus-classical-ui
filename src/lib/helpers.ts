@@ -1,3 +1,5 @@
+import { Type, type TSchema } from '@sinclair/typebox'
+
 // IsValidYear checks if given string is a 4 digits number, like "1234" (not "-123", "123", or "12345").
 export function isValidYear(num: number | null): boolean {
   return num !== null && num > 1 && num < 10_000

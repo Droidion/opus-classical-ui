@@ -30,6 +30,8 @@
       "@lib/*": ["src/lib/*"],
       "@pages/*": ["src/pages/*"],
       "@models/*": ["src/models/*"],
+      "@db/*": ["src/db/*"],
+      "@endpoints/*": ["src/endpoints/*"],
     },
     "types": [
       "vite-plugin-pwa/client",

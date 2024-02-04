@@ -11,6 +11,7 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone',
   }),
+  prefetch: false,
   integrations: [
     tailwind({
       applyBaseStyles: false,

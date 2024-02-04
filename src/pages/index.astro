@@ -2,13 +2,17 @@
 import UserLayout from '@layouts/UserLayout.astro'
 import ComposerCard from '@components/ComposerCard.astro'
 import { formatYearsRangeString } from '@lib/helpers'
-import { getComposersByPeriods } from '@lib/apiClient'
-import type { ComposersByPeriods } from '@models/ComposersByPeriods'
+import { dbConnect } from '@db/connect'
+import {
+  ComposersByPeriods,
+  getComposersByPeriods,
+} from '@db/queries/composersByPeriods'
 
 let periods: ComposersByPeriods = []
 try {
-  periods = await getComposersByPeriods()
+  periods = await getComposersByPeriods(dbConnect())
 } catch (error) {
+  console.log(error)
   return Astro.redirect('/404', 404)
 }
 ---

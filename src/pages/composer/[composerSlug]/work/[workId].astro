@@ -2,9 +2,12 @@
 import { formatWorkName, formatYearsRangeString } from '@lib/helpers'
 import RecordingCard from '@components/RecordingCard.astro'
 import UserLayout from '@layouts/UserLayout.astro'
-import { getRecordingsByWork, getWorkMetadata } from '@lib/apiClient'
-import type { WorkMetadata } from '@models/WorkMetadata'
-import type { RecordingsByWork } from '@models/RecordingsByWork'
+import { getWorkMetadata, type WorkMetadata } from '@db/queries/workMetadata'
+import {
+  getRecordingsByWork,
+  type RecordingsByWork,
+} from '@db/queries/recordingsByWork'
+import { dbConnect } from '@db/connect'
 
 const workId = Number(Astro.params.workId)
 
@@ -14,8 +17,8 @@ if (!workId) {
 let work: WorkMetadata
 let recordings: RecordingsByWork
 try {
-  work = await getWorkMetadata(workId)
-  recordings = await getRecordingsByWork(workId)
+  work = await getWorkMetadata(dbConnect(), workId)
+  recordings = await getRecordingsByWork(dbConnect(), workId)
 } catch (e) {
   console.log(e)
   return Astro.redirect('/404')

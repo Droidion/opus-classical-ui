@@ -2,9 +2,12 @@
 import { formatYearsRangeString } from '@lib/helpers'
 import WorkCard from '@components/WorkCard.astro'
 import UserLayout from '@layouts/UserLayout.astro'
-import { getComposerBySlug, getWorksByGenres } from '@lib/apiClient'
-import type { ComposerBySlug } from '@models/ComposerBySlug'
-import type { WorksByGenres } from '@models/WorksByGenres'
+import {
+  getComposerBySlug,
+  type ComposerBySlug,
+} from '@db/queries/composerBySlug'
+import { getWorksByGenres, type WorksByGenres } from '@db/queries/worksByGenres'
+import { dbConnect } from '@db/connect'
 
 const { slug } = Astro.params
 if (!slug) {
@@ -13,8 +16,8 @@ if (!slug) {
 let composer: ComposerBySlug
 let genres: WorksByGenres
 try {
-  composer = await getComposerBySlug(slug)
-  genres = await getWorksByGenres(composer.id)
+  composer = await getComposerBySlug(dbConnect(), slug)
+  genres = await getWorksByGenres(dbConnect(), composer.id)
 } catch (e) {
   return Astro.redirect('/404', 404)
 }

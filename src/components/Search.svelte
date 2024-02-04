@@ -1,7 +1,7 @@
 <script lang="ts">
+  import type { FoundComposers } from '@db/queries/searchComposers'
   import { getSearchComposersData } from '@lib/apiClient'
   import Fuse from 'fuse.js'
-  import type { FoundComposers } from '@models/FoundComposers'
 
   let searchData: FoundComposers = []
   let searchResults: FoundComposers = []

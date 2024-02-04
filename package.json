@@ -3,10 +3,10 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
+    "dev": "bunx --bun astro dev",
+    "build": "bunx --bun astro build",
+    "preview": "bunx --bun astro preview",
+    "astro": "bunx --bun astro",
     "generate": "drizzle-kit generate:sqlite",
     "lint:eslint": "eslint --ext .svelte --ext .astro --ext .ts src/",
     "lint:ts": "tsc --noEmit",
@@ -18,10 +18,14 @@
     "@astrojs/node": "^8.1.0",
     "@astrojs/svelte": "^5.0.3",
     "@astrojs/tailwind": "^5.1.0",
+    "@libsql/client": "0.4.3",
+    "@sinclair/typebox": "^0.32.13",
     "@vitest/coverage-v8": "1.2.2",
     "astro": "4.2.6",
-    "svelte": "^4.2.9",
-    "fuse.js": "^7.0.0"
+    "drizzle-orm": "^0.29.3",
+    "fast-sort": "^3.4.0",
+    "fuse.js": "^7.0.0",
+    "svelte": "^4.2.9"
   },
   "devDependencies": {
     "@vite-pwa/astro": "^0.2.0",
